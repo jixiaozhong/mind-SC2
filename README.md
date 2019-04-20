@@ -2,7 +2,12 @@
 
 ## Update
 
-We have added the codes for training or testing an agent (P vs. T) in SC2. Now you can train an agent beating the most difficult (level-7) bot of SC2 in only one to two hours (on a common sever). Enjoy it! If you find any questions, please start an issue.
+We are cleaning up the code for the Terran vs. Terran (T vs. T) and Zerg vs. Zerg (Z vs. Z) in the mind-game. Since these two parts of the code are written by two other authors, it takes a certain amount of cleanup time and will be released when everything is fine.
+
+We have added the codes for training or testing an agent (P vs. T) in SC2. Now you can train an agent beating the most difficult (level-7) bot of SC2 in only one to two hours (on a common sever). Enjoy it! 
+
+If you find any questions, please start an issue. Before asking questions, you can take a look at the [FAQ](docs/FAQ.md)
+ first.
 
 ## Introduction
 
@@ -13,11 +18,13 @@ Our method has the following characteristics:
 * **Scalable**: Our approach can be easily extended to other races and maps and achieved good performance in these settings; 
 * **Simple**: There is no need to design manual rewards in our method, nor does it require complex architectures.
 
+Here are two screenshots of our agent (Terran) in the game which can be seen below:
+
 **Terran agent at start**
 ![Terran Agent](figures/Terran_1.jpg)
 
 **Terran agent at winning time**
-![Terran Agent](figures/Terran_2.jpg)
+![Terran Agent 2](figures/Terran_2.jpg)
 
 ## What is the Mind-game model?
 
@@ -70,11 +77,9 @@ python train_by_dummy.py
 ### Results
 
 **ACRL**
-
 ![ACRL](figures/ACRL.png)
 
 **ACRLfromScratch**
-
 ![ACRLfromScratch](figures/ACRLfromScratch.png)
 
 ## How to train an agent (P vs. T) defeating difficulty 7 bot of SC2 in one hour ?
@@ -87,14 +92,22 @@ python train_by_dummy.py
 - matplotlib==2.1
 - scipy==1.0
 
-**Notes**
+**Notes:**
+
 If you install pysc2==1.2 and find this error "futures requires Python '>=2.6, <3' but the running Python is 3.5.6", then try first install futures as follow
 ```
 pip install futures==3.1.1
 ```
 then install pysc2==1.2, and this problem is solved.
 
-**Notes**
+**Notes:**
+
+You can also install all requirements by one command:
+```
+pip install -r requirements.txt
+```
+**Notes:**
+
 If you find this warning "[features.py:361] Unknown ability 3757 seen as available." too many, you can go to the pysc2 folder and find the code of features.py and comment the line 361 code.
 
 ### Usage
@@ -124,9 +137,35 @@ python eval_mini_srcgame.py --on_server=False
 python eval_mini_srcgame.py --restore_model_path="./model/20190121-212908_mini/" --on_server=True --step_mul=8
 ```
 
-### Benchmark
-**Time**
-TODO
+### Results
+
+**Transfer learning**
+![Transfer learning](figures/Transfer.png)
+
+**Transfer learning (x_axis is hour)**
+![Transfer learning_2](figures/Transfer_in_hours.png)
+
+### Time Benchmark
+
+**Environment**
+
+| Server | CPU | Num of CPU cores | GPU | Num of GPUs |
+|--------|:---------:|:------:|:------:|:------:|
+| 1 Server |Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz| 48 | GTX 1080Ti | 4 |
+
+**Notes:**
+
+When training on server, we use a distributed training setting which is that we set the running process to 10 and threads in each process to 5. By using this distributed setting, we can run multi SC2 instances at the same time to speed up training.
+
+**Time Cost**
+
+| Method | Time in Step_1 | Time in Step_2 | Time in Step_3 | Overall Traning Time | Traning Time (in hours) |
+|--------|:---------:|:------:|:------:|:------:|:------:|
+| Ours   | 20min15sec  | 21min50sec  | 23min17sec  | 65min  | 1.08 |
+
+**Notes:**
+
+Step_1 refer to training time in difficulty level-1 of mind-game. Step_2 refer to training time in difficulty level-2 to level-7 of mind-game. Step_3 refer to training time in difficulty level-7 in original SC2 environment.
 
 ## LICENSE
 MIT LICENSE
@@ -143,7 +182,11 @@ Please cite our paper if you find this repository useful.
 
 ## FAQ
 
-Please refer to [here](docs/FAQ.md)
+Of course, you may have some questions about our project. 
+
+We put the most frequently asked questions into the [FAQ](docs/FAQ.md).
+
+If you don't find the question you want in the FAQ, you can open a new issue to ask that.
 
 
 
